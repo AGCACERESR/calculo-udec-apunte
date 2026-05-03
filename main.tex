@@ -1,0 +1,1190 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage[spanish]{babel}
+\decimalpoint
+\usepackage[T1]{fontenc}
+\usepackage[a4paper,margin=1.6cm,top=1.35cm,bottom=1.55cm]{geometry}
+\usepackage[hidelinks]{hyperref}
+\usepackage{pgfplots}
+\usepackage{caption}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage{fullpage}
+
+
+\input{preamble.tex}
+\input{macros.tex}
+
+\begin{document} 
+
+\begin{titlepage}
+    \centering
+    \vspace*{\fill} 
+    
+    \rule{\linewidth}{0.5mm} \\[0.4cm]
+    {\Huge \bfseries Apunte Fundamental} \\[0.4cm]
+    {\huge \scshape Cálculo Diferencial e Integral} \\
+    \rule{\linewidth}{0.5mm} \\[1.5cm]
+    
+    \Large \textbf{Agustín Cáceres} \\
+    \large Universidad de Concepción\\
+    \vfill 
+    
+    {\large 2024}
+    
+    \vspace*{\fill} 
+\end{titlepage}
+
+\chapter{\Huge Prefacio}
+
+Este apunte ha sido escrito por Agustín Ivan Cáceres Reyes principalmente a partir de las clases de Cálculo dictadas por la Prof. Nayda Guerrero con algunas notas de las clases de Cálculo Diferencial e Integral dictadas por el Prof. Victor Aros Ambos de la Facultad de Ciencias Físicas y Matematicas de la Universidad de Concepción.
+
+El objetivo de este apunte es ser de apoyo para las nuevas generaciones, improtante aclarar que se omitieron contenidos ya que fue hecho principalmente para un curso básico de cálculo.
+
+Cualquier comentario o contribución al correo agcaceres2023@udec.cl
+\newpage
+\tableofcontents
+\newpage
+
+
+\section{Límites y continuidad}
+
+\begin{enumerate}[label=\arabic*.]
+    \item Encuentre el valor de los siguientes límites. Si alguno no existe, indique la causa.
+    \begin{itemize}
+        \item[(a)] $\displaystyle \lim_{x\to3^+} \frac{|x^2-9|}{x-3}$
+        
+        Recordemos la definición de valor absoluto:
+        \[
+        |x^2-9| = \begin{cases}
+            x^2-9 & \text{si } x^2-9 \ge 0 \\
+            -(x^2-9) & \text{si } x^2-9 < 0
+        \end{cases}
+        \]
+        Para $x \to 3^+$, tenemos $x>3$, entonces $x^2-9>0$, por lo que $|x^2-9| = x^2-9$. Así:
+        \[
+        \lim_{x\to3^+} \frac{x^2-9}{x-3} = \lim_{x\to3^+} \frac{(x-3)(x+3)}{x-3} = \lim_{x\to3^+} (x+3) = 6.
+        \]
+        
+        \item[(b)] $\displaystyle \lim_{x\to3^-} \frac{|x^2-9|}{x-3}$
+        
+        Para $x \to 3^-$, tenemos $x<3$, entonces $x^2-9<0$, luego $|x^2-9| = -(x^2-9)$. Así:
+        \[
+        \lim_{x\to3^-} \frac{-(x^2-9)}{x-3} = \lim_{x\to3^-} \frac{-(x-3)(x+3)}{x-3} = \lim_{x\to3^-} -(x+3) = -6.
+        \]
+        
+        \item[(c)] $\displaystyle \lim_{x\to2^-}\frac{\sqrt{2x-4}}{6x-1}$
+        
+        \textbf{Nota:} Para $x \to 2^-$, se cumple $x<2$, entonces $2x-4<0$, por lo que $\sqrt{2x-4}$ no está definido en $\mathbb{R}$. Por tanto, el límite por la izquierda \textbf{no existe} en el dominio real. Si consideramos únicamente $x\ge2$, entonces el límite relevante es por la derecha:
+        \[
+        \lim_{x\to2^+}\frac{\sqrt{2x-4}}{6x-1} = \frac{0}{11} = 0.
+        \]
+        
+        \item[(d)] $\displaystyle \lim_{x\to2^+}\left(\frac{1}{x-2}-\frac{1}{|x-2|}\right)$
+        
+        Para $x\to2^+$, tenemos $x-2>0$, entonces $|x-2| = x-2$. Luego:
+        \[
+        \frac{1}{x-2} - \frac{1}{x-2} = 0 \quad \Rightarrow \quad \lim_{x\to2^+} 0 = 0.
+        \]
+        
+        \item[(e)] $\displaystyle \lim_{x\to0}\left(\frac{\cos x}{x^2}-\frac{2-x}{x+1}\right)$
+        
+        analicemos los dos términos de la resta de forma independiente cuando $x$ tiende a $0$:
+
+\begin{enumerate}
+    \item \textbf{Primer término:} $\displaystyle \frac{\cos x}{x^2}$
+    Cuando $x \to 0$, sabemos que $\cos(x) \to 1$ y $x^2 \to 0^+$. Por lo tanto:
+    \[ \frac{\cos x}{x^2} \to \frac{1}{0^+} = +\infty \]
+
+    \item \textbf{Segundo término:} $\displaystyle \frac{2-x}{x+1}$
+    Este término no tiene ninguna indeterminación. Simplemente evaluamos:
+    \[ \frac{2-0}{0+1} = \frac{2}{1} = 2 \]
+\end{enumerate}
+
+\textbf{Conclusión:}
+Al combinar ambos resultados obtenemos:
+\[ \lim_{x\to0} \left( \frac{\cos x}{x^2} - \frac{2-x}{x+1} \right) = \infty - 2 = \infty \]
+
+El límite no existe (es infinito) porque el primer término crece sin control mientras que el segundo se mantiene constante en $2$.
+    \end{itemize}
+
+    \item Determine $\lim_{x\to a^+}f(x)$, $\lim_{x\to a^-}f(x)$ y $\lim_{x\to a}f(x)$, si existen.
+    \begin{itemize}
+        \item[(a)] $f(x) = \begin{cases}
+            3-x & \text{si } x \le 1 \\
+            \dfrac{x^2-1}{x-1} & \text{si } x > 1
+        \end{cases}$, en $a=1$.
+        
+        \begin{align*}
+            \lim_{x\to1^-} f(x) &= \lim_{x\to1^-} (3-x) = 2, \\
+            \lim_{x\to1^+} f(x) &= \lim_{x\to1^+} \frac{(x-1)(x+1)}{x-1} = \lim_{x\to1^+} (x+1) = 2.
+        \end{align*}
+        Como los límites laterales son iguales, $\lim_{x\to1} f(x) = 2$.
+    \end{itemize}
+
+    \item Encuentre los siguientes límites al infinito.
+    \begin{itemize}
+        \item[(a)] $\displaystyle \lim_{x\to\infty}\left(\frac{1}{1-x}-5\right)$
+        \[
+        \lim_{x\to\infty} \frac{1}{1-x} - 5 = 0 - 5 = -5.
+        \]
+        
+        \item[(b)] $\displaystyle \lim_{x\to\infty}\left(\frac{5x^2+3x+4}{6x^2-5x+8}+3\right)$
+        \[
+        \lim_{x\to\infty} \frac{5x^2+3x+4}{6x^2-5x+8} = \frac{5}{6}, \quad \text{luego} \quad \frac{5}{6} + 3 = \frac{23}{6}.
+        \]
+    \end{itemize}
+
+    \item Determine si las gráficas de las siguientes funciones tienen asíntotas (horizontales, verticales u oblicuas).
+    \begin{itemize}
+        \item[(a)] $y = \dfrac{2x^3}{x^3-9x}$
+        
+        \textbf{Horizontales:}
+        \[
+        \lim_{x\to\pm\infty} \frac{2x^3}{x^3-9x} = 2 \quad \Rightarrow \quad y=2 \text{ es asíntota horizontal}.
+        \]
+        
+        \textbf{Verticales:} Factorizando:
+        \[
+        \frac{2x^3}{x(x^2-9)} = \frac{2x^2}{x^2-9} \quad (x\neq0).
+        \]
+        Asíntotas en $x=3$ y $x=-3$:
+        \[
+        \lim_{x\to3^+} = +\infty,\quad \lim_{x\to3^-} = -\infty, \quad \lim_{x\to-3^+} = -\infty,\quad \lim_{x\to-3^-} = +\infty.
+        \]
+        En $x=0$ el límite es $0$ (no hay asíntota).
+        
+        \textbf{Oblicuas:} Como hay asíntota horizontal ($m=0$), no hay oblicuas.
+        
+        \item[(b)] $y = 2x + \dfrac{x^2}{x^2+1}$
+        
+        \textbf{Horizontales:} $\lim_{x\to\infty} y = \infty$, no hay.
+        
+        \textbf{Verticales:} No hay, el denominador $x^2+1\neq0$.
+        
+        \textbf{Oblicuas:}
+        \[
+        m = \lim_{x\to\infty} \frac{y}{x} = \lim_{x\to\infty} \left(2 + \frac{x}{x^2+1}\right) = 2,
+        \]
+        \[
+        b = \lim_{x\to\infty} (y - 2x) = \lim_{x\to\infty} \frac{x^2}{x^2+1} = 1.
+        \]
+        Asíntota oblicua: $y = 2x+1$.
+    \end{itemize}
+
+    \item Estudie la continuidad de las siguientes funciones en los puntos respectivos.
+    \begin{itemize}
+        \item[(a)] $j(x) = \begin{cases}
+            2x-3 & \text{si } x>1 \\
+            -1 & \text{si } x=1 \\
+            -x^2 & \text{si } x<1
+        \end{cases}$ en $x=1$.
+        
+        $j(1) = -1$. 
+        \[
+        \lim_{x\to1^+} j(x) = \lim_{x\to1^+} (2x-3) = -1, \quad \lim_{x\to1^-} j(x) = \lim_{x\to1^-} (-x^2) = -1.
+        \]
+        Por tanto, $\lim_{x\to1} j(x) = -1 = j(1)$, luego $j$ es continua en $x=1$.
+        
+        \item[(b)] $g(x) = \begin{cases}
+            \dfrac{|x^2-4|}{x^2-4} & \text{si } x^2 \neq 4 \\
+            1 & \text{si } x^2=4
+        \end{cases}$ en $x=-2$.
+        
+        $g(-2)=1$. Para $x\to-2^+$ ($x>-2$), $x^2-4>0$? En realidad para $x=-1.9$, $x^2=3.61$, $x^2-4<0$. Hay que analizar con cuidado:
+        \[
+        |x^2-4| = \begin{cases}
+            x^2-4 & \text{si } |x|\ge2 \\
+            4-x^2 & \text{si } |x|<2
+        \end{cases}
+        \]
+        Para $x\to-2^+$ (por ejemplo $-1.9$), $|x|<2$, entonces $|x^2-4| = 4-x^2$, luego:
+        \[
+        \lim_{x\to-2^+} \frac{4-x^2}{x^2-4} = \lim_{x\to-2^+} \frac{-(x^2-4)}{x^2-4} = -1.
+        \]
+        Para $x\to-2^-$ (por ejemplo $-2.1$), $|x|>2$, entonces $|x^2-4| = x^2-4$, luego:
+        \[
+        \lim_{x\to-2^-} \frac{x^2-4}{x^2-4} = 1.
+        \]
+        Como los límites laterales son distintos, $\lim_{x\to-2} g(x)$ no existe, por lo que $g$ no es continua en $x=-2$.
+    \end{itemize}
+
+    \item Determine la derivada $f'(x)$ utilizando la definición en el punto dado.
+    \begin{itemize}
+        \item[(a)] $f(x)=3x+2$, en $x=2$.
+        
+        Usando la definición:
+        \[
+        f'(2) = \lim_{h\to0} \frac{f(2+h)-f(2)}{h} = \lim_{h\to0} \frac{3(2+h)+2 - (6+2)}{h} = \lim_{h\to0} \frac{3h}{h} = 3.
+        \]
+    \end{itemize}
+\end{enumerate}
+ \newpage
+\section{La derivada}
+Primero, Un resumen para poder abordar mejor los ejercicios.
+\subsection{Derivadas Fundamentales}
+\begin{itemize}
+    \item \textbf{Derivada de una constante}:
+        \[ \frac{d}{dx}(c) = 0 \quad donde c \text{ es una constante} \]
+    
+    \item \textbf{Derivada de \( x \)}:
+        \[ \frac{d}{dx}(x) = 1 \]
+    
+    \item \textbf{Potencia de \( x \)}:
+        \[ \frac{d}{dx}(x^n) = nx^{n-1} \quad \text{donde } n \text{ es un exponente constante} \]
+    
+    \item \textbf{Derivada de una función exponencial}:
+        \[ \frac{d}{dx}(e^x) = e^x \cdot x^`=e^x \cdot 1 = e^x \]
+    
+    \item \textbf{Derivada del logaritmo natural}:
+        \[ \frac{d}{dx}(\ln x) = \frac{1}{x} \quad \text{para } x > 0 \]
+    \item \textbf{Derivada del seno y del coseno}
+    \[ \frac{d}{dx}(\sin x) =\cos x \quad 
+    \]
+    \[ \frac{d}{dx}(\cos x) =-\sin x \quad 
+    \]
+\end{itemize}
+
+\subsubsection{Regla del producto}
+
+La regla del producto se utiliza para derivar el producto de dos funciones.
+
+Si \( f(x) \) y \( g(x) \) son funciones diferenciables, entonces:
+\[ \frac{d}{dx}[f(x)g(x)] = f'(x)g(x) + f(x)g'(x) \]
+
+\textbf{Ejemplo de regla del producto}:
+Considera las funciones}\( f(x) = x^2 \) y \( g(x) = \sin x \).
+Calcula la derivada de \( h(x) = f(x)g(x) = x^2 \sin x \).
+
+Usando la regla del producto:
+\[ h'(x) = \frac{d}{dx}[x^2 \sin x] = 2x \sin x + x^2 \cos x \]
+
+\subsubsection{Regla del cociente}
+
+La regla del cociente se utiliza para derivar el cociente de dos funciones.
+
+Si \( f(x) \) y \( g(x) \) son funciones diferenciables y \( g(x) \neq 0 \), entonces:
+\[ \frac{d}{dx}\left[\frac{f(x)}{g(x)}\right] = \frac{f'(x)g(x) - f(x)g'(x)}{[g(x)]^2} \]
+
+\textbf{Ejemplo de regla del cociente}:
+Considera las funciones \( f(x) = \cos x \) y \( g(x) = x^2 \).
+Calcula la derivada de \( q(x) = \frac{\cos x}{x^2} \).
+
+Usando la regla del cociente:
+\[ q'(x) = \frac{(-\sin x)(x^2) - (\cos x)(2x)}{(x^2)^2} = \frac{-x^2 \sin x - 2x \cos x}{x^4} \]
+\subsubsection{Regla de la cadena}
+
+La regla de la cadena se utiliza para derivar funciones compuestas.
+
+Si \( y = f(u) \) y \( u = g(x) \), entonces:
+\[ \frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx} = f'(u) \cdot g'(x) \]
+
+\textbf{Ejemplo de regla de la cadena}:
+Considera \( y = (3x^2 + 1)^3 \).
+Encuentra \( \frac{dy}{dx} \).
+
+{Usando la regla de la cadena:
+\[ \frac{dy}{dx} = 3(3x^2 + 1)^2 \cdot (6x) = 18x(3x^2 + 1)^2 \]
+
+Estas reglas son esenciales en cálculo diferencial para calcular derivadas de funciones más complejas mediante descomposición en funciones simples y aplicando las reglas adecuadas.\\\\
+    
+    \subsection{ Funciones de Clase $C^n$} 
+   Tenemos que recordar un teorema:\\
+    \quad \textbf{Si $f(x)$ es derivable en un punto entonces es continua en dicho punto.} \\\\
+    Y su contrareciproco será: \\
+    \quad \textbf{Si no es continua en dicho punto, entonces $f(x)$ no es derivable en ese punto.} \\\\
+   Notemos que su contrareciproco es muy poderoso, ya que si una funcion es discontinua en un punto automaticamente podemos asegurar que no existe su derivada. Ahora bien, hay que tener cuidado al usar el teorema sin el reciproco ya que es una implicancia (va para un lado solamente), si se asegura la derivabilidad implica que es continua en el punto, no podemos leerlo al reves ya que ES UNA IMPLICANCIA. Resumen: no todas las funciones continuas son derivables. \\\\
+    Un ejemplo puede ser el valor absoluto, en el punto (0,0) esta cambia su función de manera brusca, no suave. \\\\
+    Si vemos que una función es continua en el punto de conflicto, podemos asegurar que la funcion es de clase $C^0$ Ahora bien, si aseguramos la derivabilidad podemos decir que es clase $C^1$ y si aseguramos que $f``(x)$ es derivable  en todo su dominio, entonces es $C^2$\\
+\vspace{1em}
+
+% Primera gráfica de valor absoluto
+\begin{figure}[h]
+    \centering
+    \begin{minipage}{0.6\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                xmin=-10, xmax=10,
+                ymin=0, ymax=10,
+                width=\textwidth,
+                height=0.5\textwidth,
+                xlabel={$x$},
+                ylabel={$f(x)$},
+                domain=-10:10,
+                samples=100,
+                smooth,
+                axis lines=middle,
+                grid=major,
+                xtick={-10,-8,...,10},
+                ytick={0,2,...,10},
+                legend pos=outer north east,
+                legend entries={$f(x) = |x|$}
+            ]
+            \addplot[blue,thick] {abs(x)};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{El valor absoluto \( |x| \) pertenece a la clase \( C^1 \), donde \( x \in \mathbb{R} \setminus \{0\} \).}
+        \label{fig:abs_graph}
+    \end{minipage}
+\end{figure}
+
+% Segunda gráfica de función cuadrática
+\begin{figure}[h]
+    \centering
+    \begin{minipage}{0.6\textwidth}
+        \centering
+        \begin{tikzpicture}
+            \begin{axis}[
+                xmin=-2, xmax=2,
+                ymin=0, ymax=4,
+                width=\textwidth,
+                height=0.5\textwidth,
+                xlabel={$x$},
+                ylabel={$f(x)$},
+                domain=-2:2,
+                samples=100,
+                smooth,
+                axis lines=middle,
+                grid=major,
+                xtick={-2,-1,...,2},
+                ytick={0,1,...,4},
+                legend pos=outer north east,
+                legend entries={$f(x) = x^2$}
+            ]
+            \addplot[blue,thick] {x^2};
+            \end{axis}
+        \end{tikzpicture}
+        \caption{Gráfica de la función \( f(x) = x^2 \), que es de clase \( C^2 \).}
+        \label{fig:c2_function}
+    \end{minipage}
+\end{figure}
+\newpage 
+
+\subsection{ Funcion implicita}
+Una \textbf{función implícita} es una relación entre dos variables \( x \) y \( y \) que no está expresada de manera explícita como \( y = f(x) \), pero se describe mediante una ecuación que involucra tanto \( x \) como \( y \).
+
+Por ejemplo, considera la ecuación \( x^2 + y^2 = 25 \). Esta ecuación no está escrita como \( y = f(x) \), pero define una relación entre \( x \) e \( y \). Podemos resolver esta ecuación para \( y \) en términos de \( x \) usando álgebra:
+
+\[
+y^2 = 25 - x^2
+\]
+
+\[
+y = \pm \sqrt{25 - x^2}
+\]
+
+Aquí, \( y \) se expresa implícitamente en términos de \( x \). La función \( y \) no se despeja completamente como una función explícita de \( x \), pero la relación entre \( x \) e \( y \) se describe de manera indirecta a través de la ecuación original.\\
+
+En resumen, una función implícita es una forma de representar relaciones entre variables cuando no se puede expresar una variable en términos directos de la otra. Esto es común en muchas áreas de las matemáticas, incluyendo el cálculo y el álgebra.\\
+
+
+
+La\textbf{derivada implícita} en una variable se utiliza para encontrar la derivada \( \frac{dy}{dx} \) de una función \( y \) respecto a \( x \) cuando la relación entre \( x \) e \( y \) está dada implícitamente por una ecuación.
+
+Por ejemplo, considera la ecuación \( x^2 + y^2 = 25 \). Diferenciamos ambos lados respecto a \( x \):
+\[ \frac{d}{dx} (x^2 + y^2) = \frac{d}{dx} (25) \]
+\[ 2x + 2y \frac{dy}{dx} = 0 \]
+
+Despejando \( \frac{dy}{dx} \):
+\[ 2y \frac{dy}{dx} = -2x \]
+\[ \frac{dy}{dx} = -\frac{2x}{2y} = -\frac{x}{y} \]
+
+Por lo tanto, \( \frac{dy}{dx} = -\frac{x}{y} \) es la derivada implícita de \( y \) respecto a \( x \) para la ecuación \( x^2 + y^2 = 25 \).\\ 
+
+Para encontrar \( \frac{dy}{dx} \) en \( x = \pi \), simplemente sustituimos \( x = \pi \) en la expresión:
+\[ \frac{dy}{dx} \bigg|_{x = \pi}=y`(\pi) = -\frac{\pi}{y} \]
+
+Esta es la derivada implícita de \( y \) respecto a \( x \) en \( x = \pi \) para la ecuación \( x^2 + y^2 = 25 \).
+
+\subsection{Ejercicios Propuestos}
+
+\begin{enumerate}
+\item Determine la derivada $f'(x)$ de las siguientes funciones empleando las reglas fundamentales de derivación:
+
+\begin{itemize}
+    \item[(a)] $f(x) = 3x(2x^2 + 5)$
+    
+    Para simplificar el proceso de derivación, expandimos el producto mediante la propiedad distributiva, obteniendo la expresión polinómica $f(x) = 6x^3 + 15x$. Aplicando la regla de la potencia y la linealidad de la derivada, resulta:
+    \[
+    f'(x) = \frac{d}{dx}(6x^3) + \frac{d}{dx}(15x) = 18x^2 + 15
+    \]
+
+    \item[(b)] $f(x) = \frac{3x^2 - 3\sqrt{x}}{2x}$
+    
+    Abordamos la función como el cociente de $g(x) = 3x^2 - 3x^{1/2}$ y $h(x) = 2x$. Sus respectivas derivadas son $g'(x) = 6x - \frac{3}{2}x^{-1/2}$ y $h'(x) = 2$. Empleando la regla del cociente:
+    \[
+    f'(x) = \frac{(6x - \frac{3}{2}x^{-1/2})(2x) - (3x^2 - 3x^{1/2})(2)}{(2x)^2}
+    \]
+    Al distribuir y simplificar los términos en el numerador, obtenemos:
+    \[
+    f'(x) = \frac{12x^2 - 3x^{1/2} - 6x^2 + 6x^{1/2}}{4x^2} = \frac{6x^2 + 3\sqrt{x}}{4x^2}
+    \]
+
+    \item[(c)] $f(x) = \frac{8-x^3}{8+x^3}$
+    
+    Aplicamos la regla del cociente definiendo el numerador como $u = 8-x^3$ ($u' = -3x^2$) y el denominador como $v = 8+x^3$ ($v' = 3x^2$). La estructura de la derivada es:
+    \[
+    f'(x) = \frac{-3x^2(8+x^3) - (8-x^3)(3x^2)}{(8+x^3)^2}
+    \]
+    Expandiendo el numerador, los términos de grado cinco se anulan ($-3x^5 + 3x^5$), simplificándose la expresión a:
+    \[
+    f'(x) = \frac{-24x^2 - 3x^5 - 24x^2 + 3x^5}{(8+x^3)^2} = \frac{-48x^2}{(8+x^3)^2}
+    \]
+
+    \item[(d)] $f(x) = x^3 e^x$
+    
+    La función consiste en el producto de un polinomio de tercer grado y una función exponencial natural. Aplicando la regla del producto $(uv)' = u'v + uv'$:
+    \[
+    f'(x) = \frac{d}{dx}(x^3)e^x + x^3\frac{d}{dx}(e^x) = 3x^2 e^x + x^3 e^x
+    \]
+    Factorizando por el término común, la solución puede expresarse como $f'(x) = x^2 e^x(3+x)$.
+
+    \item[(e)] $f(x) = \ln(\sin^3(x))$
+    
+    Para esta función compuesta, aplicamos la regla de la cadena. Definimos la función interna como $u = \sin^3(x)$, cuya derivada es $u' = 3\sin^2(x)\cos(x)$. Sabiendo que $\frac{d}{dx}\ln(u) = \frac{u'}{u}$, resulta:
+    \[
+    f'(x) = \frac{3\sin^2(x)\cos(x)}{\sin^3(x)}
+    \]
+    Simplificando los términos trigonométricos, obtenemos una expresión elegante basada en la función cotangente:
+    \[
+    f'(x) = \frac{3\cos(x)}{\sin(x)} = 3\cot(x)
+    \]
+
+    \item[(f)] $f(x) = \sec(x)$
+    
+    Considerando la identidad $\sec(x) = (\cos(x))^{-1}$, aplicamos la regla del cociente (o alternativamente la regla de la cadena para potencias negativas):
+    \[
+    f'(x) = \frac{d}{dx}\left(\frac{1}{\cos(x)}\right) = \frac{0 \cdot \cos(x) - 1 \cdot (-\sin(x))}{\cos^2(x)} = \frac{\sin(x)}{\cos^2(x)}
+    \]
+    Mediante la descomposición en fracciones, la derivada se identifica comúnmente como:
+    \[
+    f'(x) = \frac{\sin(x)}{\cos(x)} \cdot \frac{1}{\cos(x)} = \tan(x)\sec(x)
+    \]
+\end{itemize}
+
+
+\item \textbf{Derivadas de orden superior}
+
+Calcule las sucesivas derivadas de una función.
+
+\begin{itemize}
+    \item[(a)] $f(x)=17e^{3x^5}$
+    
+    Para la \textbf{primera derivada}, aplicamos la regla de la cadena sobre el exponente:
+    \[ f'(x) = 17 \cdot e^{3x^5} \cdot (15x^4) = 255x^4 e^{3x^5} \]
+    
+    Para la \textbf{segunda derivada}, empleamos la regla del producto entre el término polinomial $255x^4$ y el exponencial:
+    \[ f''(x) = 1020x^3 e^{3x^5} + 255x^4 (15x^4 e^{3x^5}) = (1020x^3 + 3825x^8) e^{3x^5} \]
+    
+    Finalmente, la \textbf{tercera derivada} requiere expandir nuevamente mediante la regla del producto y simplificar términos semejantes:
+    \[ f'''(x) = (3060x^2 + 30600x^7)e^{3x^5} + (1020x^3 + 3825x^8)(15x^4 e^{3x^5}) \]
+    \[ f'''(x) = (3060x^2 + 45900x^7 + 57375x^{12})e^{3x^5} \]
+
+    \item[(b)] $f(x)=\dfrac{x^3}{x-1}$
+    
+    Aplicando la \textbf{regla del cociente}, obtenemos la primera derivada:
+    \[ f'(x) = \frac{3x^2(x-1) - x^3(1)}{(x-1)^2} = \frac{2x^3 - 3x^2}{(x-1)^2} \]
+    
+    Para la \textbf{segunda derivada}, derivamos el resultado anterior. Tras expandir el numerador y simplificar factores comunes con el denominador, resulta:
+    \[ f''(x) = \frac{(6x^2-6x)(x-1)^2 - (2x^3-3x^2)(2(x-1))}{(x-1)^4} = \frac{2x^3 - 6x^2 + 6x}{(x-1)^3} \]
+    
+    Repitiendo el proceso para la \textbf{tercera derivada}, se observa una simplificación notable que elimina los términos de grado superior:
+    \[ f'''(x) = \frac{d}{dx} \left[ \frac{2x^3 - 6x^2 + 6x}{(x-1)^3} \right] = \frac{-6}{(x-1)^4} \]
+
+    \item[(c)] $f(x)=(10-x^2)^3$
+    
+    Iniciamos con la \textbf{primera derivada} mediante la regla de la cadena (potencia de una función):
+    \[ f'(x) = 3(10-x^2)^2(-2x) = -6x(10-x^2)^2 \]
+    
+    Para la \textbf{segunda derivada}, aplicamos la regla del producto. Notemos que esto genera una expresión que se puede factorizar convenientemente:
+    \[ f''(x) = -6(10-x^2)^2 - 6x \cdot 2(10-x^2)(-2x) = (10-x^2)(30x^2-60) \]
+    
+    Para la \textbf{tercera derivada}, expandimos el producto anterior $f''(x) = 300x^2 - 600 - 30x^4 + 60x^2$ y derivamos término a término:
+    \[ f'''(x) = \frac{d}{dx}(-30x^4 + 360x^2 - 600) = 720x - 120x^3 \]
+
+    \item[(d)] $f(x)=\ln(\sin^3 x)$
+    
+    Utilizando la propiedad de logaritmos $\ln(a^n) = n\ln(a)$, reescribimos la función como $f(x) = 3\ln(\sin x)$. Esto facilita enormemente el cálculo de la \textbf{primera derivada}:
+    \[ f'(x) = 3 \cdot \frac{\cos x}{\sin x} = 3\cot x \]
+    
+    A partir de aquí, las derivadas sucesivas siguen las reglas directas de las funciones trigonométricas:
+    \begin{itemize}
+        \item \textbf{Segunda derivada:} $f''(x) = \frac{d}{dx}(3\cot x) = -3\csc^2 x$
+        \item \textbf{Tercera derivada:} $f'''(x) = -3 \cdot 2\csc x (-\csc x \cot x) = 6\csc^2 x \cot x$
+    \end{itemize}
+\end{itemize}
+
+\item \textbf{Derivación implícita}
+
+Calcule las derivadas implicitas 
+\begin{itemize}
+    \item[(a)] $(x^2+y^2)^2=4x^2y$
+    
+    Derivamos ambos miembros de la ecuación con respecto a $x$. En el lado izquierdo aplicamos la regla de la cadena para la potencia, y en el derecho la regla del producto:
+    \[ 2(x^2+y^2) \cdot \frac{d}{dx}(x^2+y^2) = \frac{d}{dx}(4x^2) \cdot y + 4x^2 \cdot \frac{d}{dx}(y) \]
+    \[ 2(x^2+y^2) \left( 2x + 2y \frac{dy}{dx} \right) = 8xy + 4x^2 \frac{dy}{dx} \]
+    
+    Aislamos los términos que contienen $\frac{dy}{dx}$ para despejar la derivada:
+    \[ 4x(x^2+y^2) + 4y(x^2+y^2)\frac{dy}{dx} = 8xy + 4x^2\frac{dy}{dx} \]
+    \[ \frac{dy}{dx} \left[ 4y(x^2+y^2) - 4x^2 \right] = 8xy - 4x(x^2+y^2) \]
+    
+    Finalmente, obtenemos la expresión para la pendiente de la recta tangente en cualquier punto $(x, y)$ de la curva:
+    \[ \frac{dy}{dx} = \frac{8xy - 4x(x^2+y^2)}{4y(x^2+y^2) - 4x^2} \]
+
+    \item[(b)] $11\ln(yx^2)-x\sin(3y)-8=-2xy$
+    
+    Procedemos a derivar término a término. Notemos que el logaritmo puede simplificarse antes de derivar como $11(\ln y + 2\ln x)$ para facilitar el cálculo, o derivarse directamente mediante regla de la cadena:
+    \[ \frac{11}{yx^2} \left( x^2 \frac{dy}{dx} + 2xy \right) - \left( \sin(3y) + x\cos(3y) \cdot 3 \frac{dy}{dx} \right) = -2y - 2x \frac{dy}{dx} \]
+    
+    Simplificamos los términos del logaritmo y distribuimos los signos:
+    \[ \frac{11}{y}\frac{dy}{dx} + \frac{22}{x} - \sin(3y) - 3x\cos(3y)\frac{dy}{dx} = -2y - 2x\frac{dy}{dx} \]
+    
+    Agrupamos todos los términos con $\frac{dy}{dx}$ en el lado izquierdo y los términos independientes en el derecho:
+    \[ \frac{dy}{dx} \left( \frac{11}{y} - 3x\cos(3y) + 2x \right) = \sin(3y) - 2y - \frac{22}{x} \]
+    
+    Resultando en la derivada implícita:
+    \[ \frac{dy}{dx} = \frac{\sin(3y) - 2y - \frac{22}{x}}{\frac{11}{y} - 3x\cos(3y) + 2x} \]
+\end{itemize}
+\item \textbf{Recta tangente}
+
+Determine la ecuación de la recta tangente a la curva $(x^2+4)y=8$ en el punto $(2,1)$:
+
+\begin{itemize}
+    \item \textbf{Cálculo de la pendiente ($m$):}
+    Derivamos de forma implícita respecto a $x$:
+    \[ 2xy + (x^2+4)y' = 0 \implies y' = \frac{-2xy}{x^2+4} \]
+    
+    Evaluamos en el punto $(2,1)$ para obtener la pendiente:
+    \[ m = y'(2,1) = \frac{-2(2)(1)}{2^2+4} = \frac{-4}{8} = -\frac{1}{2} \]
+
+    \item \textbf{Ecuación de la recta:}
+    Utilizamos la forma punto-pendiente $y - y_0 = m(x - x_0)$:
+    \[ y - 1 = -\frac{1}{2}(x - 2) \]
+    
+    Simplificando a su forma explícita:
+    \[ y = -\frac{1}{2}x + 1 + 1 \implies y = -\frac{1}{2}x + 2 \]
+\end{itemize}
+\end{enumerate}
+
+\section{Aplicaciones de la derivada}
+ \subsection{Primer Criterio}
+ El \textbf{primer criterio de la derivada} es una regla utilizada en cálculo para determinar los intervalos en los que una función \( f(x) \) es creciente o decreciente a partir del signo de su derivada.
+
+\begin{itemize}
+    \item Si \( f'(x) > 0 \)para todo \( x \) en un intervalo \( I \), entonces \( f(x) \) es creciente en \( I \).}
+    \item Si \( f'(x) < 0 \) para todo \( x \) en un intervalo \( I \), entonces \( f(x) \) es decreciente en \( I \).
+\end{itemize}
+
+
+\subsection*{Ejemplo Introductorio}
+
+Consideremos la función $f(x) = x^2$. Para determinar sus intervalos de monotonía, usamos la primera derivada:
+
+\begin{enumerate}
+    \item \textbf{Derivada:}
+    \[
+        f'(x) = 2x
+    \]
+
+    \item \textbf{Análisis de signo:}
+    \begin{itemize}
+        \item $f'(x) > 0 \iff x > 0$
+        \item $f'(x) < 0 \iff x < 0$
+    \end{itemize}
+\end{enumerate}
+
+\textbf{Conclusión:}  
+$f$ es creciente en $(0,\infty)$ y decreciente en $(-\infty,0)$.
+
+
+
+
+
+
+
+\subsection{Segundo Criterio}
+
+El segundo criterio de la derivada nos proporciona la concavidad de la funcion, si es concava hacia arriba nos dirá un minimo relativo, por otro lado si es concava hacia abajo nos entregará un maximo relativo.
+\subsubsection{Teorema valores extremos}
+Una función f(x) continua en un intervalo cerrado [a,b] siempre tiene máximo absoluto y un mínimo absoluto en el intervalo.
+
+\subsection*{Ejemplo}
+Sea $f(x)=x^2$ donde $x \in [-2,2]$
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.5} % Mejora el espacio vertical
+\small
+\begin{tabular}{lp{5cm}p{5cm}}
+\toprule
+\textbf{Punto crítico ($x$)} & \textbf{Primer criterio}  & \textbf{Segundo criterio}  \\
+\midrule
+$-2$ & $f'(-2) = -4$ \newline \textit{(Decreciente)} & $f''(-2) = 2$ \newline \textit{(Cóncavo hacia arriba)} \\
+\addlinespace
+$0$ & $f'(0) = 0$ \newline \textit{(Punto crítico)} & $f''(0) = 2$ \newline \textit{(Cóncavo hacia arriba)} \\
+\addlinespace
+$2$ & $f'(2) = 4$ \newline \textit{(Creciente)} & $f''(2) = 2$ \newline \textit{(Cóncavo hacia arriba)} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = middle,
+    grid = both,
+    grid style = {line width=.1pt, draw=gray!10},
+    major grid style = {line width=.2pt, draw=gray!30},
+    width=10cm, height=8cm,
+    xlabel = {\small \( x \)},
+    ylabel = {\small \( y \)},
+    xmin = -2.8, xmax = 2.8,
+    ymin = -0.8, ymax = 5.5,
+    xtick = {-2, -1, 0, 1, 2},
+    ytick = {1, 2, 3, 4},
+    tick label style = {font=\tiny},
+    axis line style={-latex},
+    ]
+    
+    % La Parábola
+    \addplot[
+        domain=-2:2, 
+        samples=100, 
+        ultra thick, 
+        blue!70!black,
+    ] {x^2};
+    
+    % Punto crítico: Mínimo (Vértice)
+    \addplot[
+        color=red!80!black, 
+        only marks, 
+        mark=*, 
+        mark size=2pt,
+    ] coordinates {(0,0)} 
+    node[anchor=north, yshift=-3pt, font=\tiny\bfseries] {Mínimo};
+    
+    % Puntos: Máximos relativos (Extremos del intervalo)
+    \addplot[
+        color=green!50!black, 
+        only marks, 
+        mark=*, 
+        mark size=2pt,
+    ] coordinates {(-2,4) (2,4)};
+    
+    \node[anchor=south, color=green!50!black, font=\tiny\bfseries] at (axis cs: -2, 4) {Máximo};
+    \node[anchor=south, color=green!50!black, font=\tiny\bfseries] at (axis cs: 2, 4) {Máximo};
+    
+    % Líneas de proyección para los máximos
+    \draw[dashed, gray!50, thin] (axis cs: -2, 0) -- (axis cs: -2, 4) -- (axis cs: 2, 4) -- (axis cs: 2, 0);
+
+    % Ilustración de la Concavidad
+    \draw[orange, thick, bend right=45] (axis cs: -0.6, 1.2) to (axis cs: 0.6, 1.2);
+    \node[orange!80!black, font=\tiny\bfseries] at (axis cs: 0, 1.6) {Cóncava hacia arriba};
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Ahora bien, sabemos que en x=0 hay un cambio de monotonia (decreciente a creciente) y además por la segunda derivada sabemos que es un punto de inflexión (no hay cambio de concavidad) por lo que se asegura que en 0 hay un minimo absoluto. ahora bien, remplazando el punto -1 y 2 en la funcion, el valor mas alto nos dirá cual es el maximo absoluto, por lo que en el x=2 se encuentra este.
+
+\subsection*{Ejemplo}
+Sea $f(x)=x^2$ 
+
+\begin{table}[h]
+\centering
+\renewcommand{\arraystretch}{1.8} % Mejora el espacio vertical para que no se vea apretado
+\small
+\begin{tabular}{lp{5cm}p{5cm}}
+\toprule
+\textbf{Punto crítico ($x$)} & \textbf{Primer criterio}  & \textbf{Segundo criterio} \\
+\midrule
+$0$ & $f'(0) = 0$ \newline \textit{(Punto crítico)} & $f''(0) = 2 > 0$ \newline \textit{Cóncavo hacia arriba} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = middle,
+    grid = both,
+    grid style = {line width=.1pt, draw=gray!10},
+    major grid style = {line width=.2pt, draw=gray!30},
+    width=10cm, height=8cm,
+    xlabel = {\small \( x \)},
+    ylabel = {\small \( y \)},
+    xmin = -5.8, xmax = 5.8,
+    ymin = -2, ymax = 28,
+    xtick = {-4, -2, 0, 2, 4},
+    ytick = {5, 10, 15, 20, 25},
+    tick label style = {font=\tiny},
+    axis line style={-latex},
+    ]
+    
+    % La Parábola con flechas (indica que no hay máximo)
+    \addplot[
+        <->, % Flechas en ambos extremos
+        domain=-5.2:5.2, 
+        samples=100, 
+        ultra thick, 
+        blue!70!black,
+    ] {x^2};
+    
+    \node[blue!70!black] at (axis cs: 3.2, 20) {\footnotesize \( f(x) = x^2 \)};
+    
+    % Punto crítico: Único extremo (Mínimo)
+    \addplot[
+        color=red!80!black, 
+        only marks, 
+        mark=*, 
+        mark size=2.5pt,
+    ] coordinates {(0,0)};
+    \node[anchor=north, yshift=-3pt, color=red!80!black, font=\tiny\bfseries] at (axis cs: 0,0) {Mínimo Absoluto};
+
+    % Nota de concavidad
+    \draw[orange, thick, bend right=50] (axis cs: -1.5, 8) to (axis cs: 1.5, 8);
+    \node[orange!80!black, font=\tiny\bfseries] at (axis cs: 0, 9) {Cóncava hacia arriba};
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+Por lo que en x=0 se asegura un minimo y no hay maximo local.}
+
+
+\subsection{Ejercicios Propuestos}
+\begin{enumerate}
+    \item Aplique los criterios de la derivada 
+\begin{itemize}
+
+\item[(a)] $f(x)=x^3-12x^2+9x+10$
+
+\[
+f'(x)=3x^2-24x+9
+\]
+
+\[
+x=4\pm\sqrt{13}
+\]
+
+\[
+\begin{array}{c|c|c}
+\text{Intervalo} & f'(x) & \text{Comportamiento} \\
+\hline
+(-\infty,4-\sqrt{13}) & + & \text{Creciente} \\
+(4-\sqrt{13},4+\sqrt{13}) & - & \text{Decreciente} \\
+(4+\sqrt{13},\infty) & + & \text{Creciente}
+\end{array}
+\]
+
+Máximo local en $x=4-\sqrt{13}$, mínimo local en $x=4+\sqrt{13}$.
+
+\item[(b)] $f(x)=\dfrac{x^2}{x^2-9}$
+
+\[
+\text{Dom}(f)=\mathbb{R}\setminus\{-3,3\}
+\]
+
+\[
+f'(x)=\frac{-18x}{(x^2-9)^2}
+\]
+
+\[
+\begin{array}{c|c|c}
+\text{Intervalo} & f'(x) & \text{Comportamiento} \\
+\hline
+(-\infty,-3) & + & \text{Creciente} \\
+(-3,0) & + & \text{Creciente} \\
+(0,3) & - & \text{Decreciente} \\
+(3,\infty) & - & \text{Decreciente}
+\end{array}
+\]
+
+Máximo local en $x=0$.
+\end{itemize}
+
+\end{enumerate}
+
+\subsection{Optimización}
+Ahora bien debemos aplicar lo que sabemos en un problema real, lo mas complicado acá es modelar la función. veamos un ejemplo:
+
+Se tiene una barra de acero de 150 metros, se quiere hacer un arco de futbol. Busque la superficie maxima que se puede lograr.
+
+Primero debemos modelar la funcion. Sabemos que un arco de futbol es de forma rectangular, por lo que el alto lo denotaremos como $x$ y el largo con una $y$
+
+% Define las dimensiones x e y
+\newcommand{\x}{4} % Alto del rectángulo en unidades
+\newcommand{\y}{6} % Largo del rectángulo en unidades
+
+% Dibuja el rectángulo
+\begin{center}
+\begin{tikzpicture}
+    \draw[thick] (0, 0) rectangle (\y, \x);
+    \node at (\y/2, -0.5) {(y)};
+    \node[rotate=90] at (-0.5, \x/2) {(x)};
+\end{tikzpicture}
+\end{center}
+Ahora, sabemos que el area es 
+$$f(x,y)=xy$$
+Ademas sabemos que la barra tiene 150 metros, por lo que
+$$2x+y=150$$ 
+Notemos que solo agregamos $y$, no $2y$ ya que es un arco de futbol.
+Ahora bien, como estamos en calculo de una variable necesitamos dejar solo una variable, por lo que relacionamos el largo de la barra con el area}
+\begin{equation*}
+\centering
+    y=150-2x \implies f(x)=x(150-2x)
+\end{equation*}
+
+Ahora aplicamos lo que sabemos de los criterios de la derivada para encontrar el maximo absoluto de la función.
+Como la barra es de 150 metro podemos restringir la función por lo que la función a optimizar será
+$$f(x)=-2x^2+150x$$ donde $x \in [0,150]$
+Así el problema se nos reduce gracias el teorema de valores extremos donde asegura un maximo y minimo. por lo que solamente necesitamos saber el punto critico y remplazar. en este caso el punto critico es en el punto $x=37.5$
+reemplazando en $x=0, x=150, x=37.5$ el valor maximo sera nuestro maximo absoluto, en este caso es $x=37.5$. Notemos que nos ahorramos usar la tabla gracias al teorema. 
+
+\section{Regla de L'Hopital}
+Si tenemos un limite dificil podemos acudir a L'Hopital, sin embargo tenemos que tener en cuenta que este solo se puede ocupar si hay una indefinicion de tipo $\frac{\infty}{\infty}$ o $\frac{0}{0}$
+L'Hopital nos dice que:
+$$\lim \frac{f'(x)}{g'(x)}$$ 
+Notemos que aca no se deriva como una funcion completa, sino por separado.
+
+Ejemplo: $$\lim_{x\to1}{\frac{x-1}{x^2-1}}=\lim_{x\to1}{\frac{1}{2x}}=\frac{1}{2}$$
+
+Ahora veamos un ejemplo donde tengamos que arreglar la funcion para que podamos usar la regla.
+
+Sea $\lim_{x\to0}\sin(x)\ln(\sin(x))$
+\begin{align*}
+\lim_{x\to0}\sin(x)\ln(\sin(x))=\lim_{x\to0}\frac{\ln(\sin(x))}{\frac{1}{\sin(x)}}=\lim_{x\to0}\frac{\frac{\cos}{\sin(x)}}{-\frac{\cos(x)}{\sin^2(x)}}=\lim_{x\to0}-\sin(x)=0
+\end{align*}
+
+Siempre que aplicamos L'Hopital tenemos que asegurarnos que haya la indeterminación que admite la regla
+
+\section{La integral indefinida}
+\subsection{Integrales fundamentales}
+\begin{align*}
+    &\int k \, dx = kx + C & \text{donde } k \text{ es una constante} \\[10pt]
+    &\int x \, dx = \frac{x^2}{2} + C \\[10pt]
+    &\int x^n \, dx = \frac{x^{n+1}}{n+1} + C & \text{para } n \neq -1 \\[10pt]
+    &\int \frac{1}{x} \, dx = \ln|x| + C \\[10pt]
+    &\int e^x \, dx = e^x + C \\[10pt]
+    &\int a^x \, dx = \frac{a^x}{\ln a} + C & \text{para } a > 0, a \neq 1 \\[10pt]
+    &\int \sin(x) \, dx = -\cos(x) + C \\[10pt]
+    &\int \cos(x) \, dx = \sin(x) + C \\[10pt]
+    &\int \tan(x) \, dx = -\ln|\cos(x)| + C \\[10pt]
+    &\int \cot(x) \, dx = \ln|\sin(x)| + C \\[10pt]
+    &\int \sec(x) \, dx = \ln|\sec(x) + \tan(x)| + C \\[10pt]
+    &\int \csc(x) \, dx = -\ln|\csc(x) + \cot(x)| + C \\[10pt]
+\end{align*}
+\subsection{Métodos de Integración}
+
+\subsubsection{Método de Sustitución o Cambio de Variable}
+
+El método de integración por sustitución se fundamenta en la regla de la cadena. Este proceso permite simplificar el integrando mediante un cambio de variable, transformando una integral compleja en una forma elemental. Si definimos una función derivable \( g(x) \) tal que \( u = g(x) \), entonces:
+
+\[
+\int f(g(x)) \cdot g'(x) \, dx = \int f(u) \, du
+\]
+
+donde la relación entre los diferenciales es \( du = g'(x) \, dx \).
+
+\paragraph{Ejemplo 1}
+Considere la integral \( \int 2x \cos(x^2) \, dx \). Para resolverla, definimos el cambio de variable \( u = x^2 \), de donde se sigue que su diferencial es \( du = 2x \, dx \). Al realizar la sustitución en la integral original, obtenemos:
+
+\[
+\int \cos(x^2) \cdot (2x \, dx) = \int \cos(u) \, du = \sin(u) + C
+\]
+
+Finalmente, regresando a la variable original \( x \), la solución es:
+\[
+\int 2x \cos(x^2) \, dx = \sin(x^2) + C
+\]
+
+\paragraph{Ejemplo 2}
+Sea la integral \( \int \frac{e^{\sqrt{x}}}{\sqrt{x}} \, dx \). Proponemos el cambio de variable \( u = \sqrt{x} \), lo cual implica que \( du = \frac{1}{2\sqrt{x}} \, dx \). Notamos que en el integrando original contamos con el término \( \frac{1}{\sqrt{x}} \, dx \), por lo que podemos despejarlo como \( 2 \, du = \frac{1}{\sqrt{x}} \, dx \). Sustituyendo estos términos, la integral se transforma en:
+
+\[
+\int e^{\sqrt{x}} \left( \frac{1}{\sqrt{x}} \, dx \right) = \int e^u \cdot (2 \, du) = 2\int e^u \, du
+\]
+
+Resolviendo la integral exponencial y deshaciendo el cambio de variable, obtenemos el resultado final:
+\[
+\int \frac{e^{\sqrt{x}}}{\sqrt{x}} \, dx = 2e^{\sqrt{x}} + C
+\]
+\subsubsection{Método de Integración por Partes}
+
+La integración por partes es una técnica derivada directamente de la regla de la derivada de un producto de funciones. Si $u(x)$ y $v(x)$ son funciones continuamente diferenciables, la fórmula fundamental se expresa como:
+
+\[
+\int u \, dv = uv - \int v \, du
+\]
+
+Para una selección eficiente de las funciones, se suele emplear el criterio de prioridad \textbf{LIATE} (Logarítmicas, Inversas trigonométricas, Algebraicas, Trigonométricas y Exponenciales). Bajo este criterio, se asigna como $u$ a la función que aparezca primero en la lista, facilitando la simplificación del término $\int v \, du$.
+
+\paragraph{Ejemplo 1}
+Considere la integral $\int x \sin(x) \, dx$. Identificamos una función algebraica ($x$) y una trigonométrica ($\sin(x)$); por lo tanto, siguiendo el orden de prioridad, definimos:
+\begin{center}
+    $u = x \implies du = dx$ \\
+    $dv = \sin(x) \, dx \implies v = -\cos(x)$
+\end{center}
+
+Aplicando la fórmula de integración por partes, obtenemos:
+\[
+\int x \sin(x) \, dx = -x \cos(x) - \int (-\cos(x)) \, dx
+\]
+
+Al resolver la integral resultante, se llega a la solución general:
+\[
+\int x \sin(x) \, dx = -x \cos(x) + \sin(x) + C
+\]
+
+\paragraph{Ejemplo 2}
+Sea la integral $\int x^2 e^x \, dx$. En este caso, la presencia de un término polinómico de segundo grado sugiere que el método debe aplicarse de forma iterativa. En la primera iteración, definimos $u = x^2$ y $dv = e^x \, dx$, lo que resulta en:
+\[
+\int x^2 e^x \, dx = x^2 e^x - \int 2x e^x \, dx
+\]
+
+Para resolver la nueva integral $\int 2x e^x \, dx$, aplicamos nuevamente el método tomando $u = 2x$ y $dv = e^x \, dx$:
+\[
+\int 2x e^x \, dx = 2x e^x - \int 2 e^x \, dx = 2x e^x - 2e^x
+\]
+
+Sustituyendo este resultado en la expresión original y factorizando el término común $e^x$, obtenemos la solución final:
+\[
+\int x^2 e^x \, dx = e^x (x^2 - 2x + 2) + C
+\]
+\section{La integral definida}
+La integral definida se utiliza para calcular el área bajo una curva entre dos puntos específicos en el eje \( x \). Se denota como:
+
+\[
+\int_a^b f(x) \, dx
+\]
+
+donde \( f(x) \) es la función integrando, \( a \) y \( b \) son los límites de integración, y \( dx \) indica la variable de integración.
+
+\subsection{Teorema fundamental del cálculo}
+
+Para una función continua \( f(x) \) en el intervalo \( [a, b] \):
+
+\begin{enumerate}
+    \item \textbf{Parte I:} Si definimos \( F(x) = \int_a^x f(t) \, dt \), entonces \( F(x) \) es continua en \( [a, b] \) y diferenciable en \( (a, b) \), con \( F'(x) = f(x) \).
+    
+    \item \textbf{Parte II:} Si \( F(x) \) es cualquier función tal que \( F'(x) = f(x) \) en \( (a, b) \), entonces \( \int_a^b f(x) \, dx = F(b) - F(a) \).
+\end{enumerate}
+
+Este teorema establece una relación fundamental entre la integral definida de una función continua y la derivada de su función primitiva en un intervalo dado.
+\subsection{Propiedades de la integral definida}
+
+\textbf{1. Linealidad:} Para funciones \( f(x) \) y \( g(x) \) integrables en el intervalo \( [a, b] \) y constantes \( c, d \):
+\[
+\int_a^b [c f(x) + d g(x)] \, dx = c \int_a^b f(x) \, dx + d \int_a^b g(x) \, dx
+\]
+
+\textbf{2. Aditividad en el Intervalo:} Para cualquier punto \( c \) en el intervalo \( [a, b] \):
+\[
+\int_a^b f(x) \, dx = \int_a^c f(x) \, dx + \int_c^b f(x) \, dx
+\]
+
+\textbf{3. Cambio de Límites de Integración:}
+\[
+\int_a^b f(x) \, dx = -\int_b^a f(x) \, dx
+\]
+
+\textbf{4. Propiedad del Valor Medio:} Si \( f(x) \) es continua en \( [a, b] \), entonces existe \( c \in [a, b] \) tal que:
+\[
+\int_a^b f(x) \, dx = f(c) \cdot (b - a)
+\]
+
+\subsubsection*{Ejemplos utilizando Propiedades de la Integral Definida}
+
+\textbf{Ejemplo 1: Linealidad}
+
+Calcular \( \int_0^1 (3x^2 + 2\sin x) \, dx \).
+
+\[
+\int_0^1 (3x^2 + 2\sin x) \, dx = 3 \int_0^1 x^2 \, dx + 2 \int_0^1 \sin x \, dx
+\]
+
+Calculamos cada integral por separado:
+
+\[
+\int_0^1 x^2 \, dx = \left[ \frac{x^3}{3} \right]_0^1 = \frac{1}{3}
+\]
+
+\[
+\int_0^1 \sin x \, dx = [-\cos x]_0^1 = -\cos(1) + \cos(0) = 1 - \cos(1)
+\]
+
+Sustituyendo de nuevo en la primera integral:
+
+\[
+\int_0^1 (3x^2 + 2\sin x) \, dx = 3 \cdot \frac{1}{3} + 2(1 - \cos(1)) = 1 + 2 - 2\cos(1) = 3 - 2\cos(1)
+\]
+
+\textbf{Ejemplo 2: Aditividad en el Intervalo}
+
+Calcular \( \int_0^2 x \, dx \).
+
+Podemos dividir la integral en dos partes:
+
+\[
+\int_0^2 x \, dx = \int_0^1 x \, dx + \int_1^2 x \, dx
+\]
+
+Calculamos cada integral por separado:}
+
+\[
+\int_0^1 x \, dx = \left[ \frac{x^2}{2} \right]_0^1 = \frac{1}{2}
+\]
+
+\[
+\int_1^2 x \, dx = \left[ \frac{x^2}{2} \right]_1^2 = \frac{4}{2} - \frac{1}{2} = \frac{3}{2}
+\]
+
+Sumamos los resultados:
+
+\[
+\int_0^2 x \, dx = \frac{1}{2} + \frac{3}{2} = 2
+\]
+
+Ejemplo 3: Cambio de Límites de Integración
+
+Calcular \( \int_0^1 e^{-x} \, dx \).
+
+Utilizando la propiedad de cambio de límites:
+
+\[
+\int_0^1 e^{-x} \, dx = -\int_1^0 e^{-x} \, dx = -\left[ -e^{-x} \right]_1^0 = -(-e^{-1} + e^0) = e^{-1} - 1
+\]
+\subsection{Áreas de regiones}
+$$\int_{a}^b f(x)-t(x) dx$$ donde $f(x)$ es la función mayor y $t(x)$ la menor.
+
+\subsubsection*{Ejemplo:} 
+El area de la región limitada por las curvas $y=x^2-2x$ e $y=-x^2+4$
+
+\subsubsection*{Solución:}
+Primero denotaré las funciones
+$$h(x)=x^2-2x$$
+$$g(x)=-x^2+4$$
+veamos donde se intersectan, igualamos $$y=y$$
+\begin{center}
+\begin{align*}
+x^2 - 2x = -x^2 + 4 \\
+2x^2 - 2x - 4 = 0 \\
+x^2 - x + \left(\frac{1}{2}\right)^2 = 2 + \left(\frac{1}{2}\right)^2 \\
+\left(x + \frac{1}{2}\right)^2 = \frac{9}{4} \\
+\left|x + \frac{1}{2}\right| = \frac{3}{2} \\
+x_1 = 2 \\
+x_2=-1
+\end{align*}
+\end{center}
+Por lo que el limite inferior de la integral será -1 y la superior 2
+
+$$\int_{-1}^2 f(x)dx$$
+ahora bien, para ver que funcion es mayor y cual es menor basta con reemplazar un punto que pertenezca al area, en este caso usaré x=0
+$$h(0)=0$$
+$$g(0)=4$$
+por lo que la integral nos queda
+$$\int_{-1}^2 -x^2+4-(x^2-2x) dx=9$$
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines=middle,
+    xlabel={$x$},
+    ylabel={$y$},
+    xmin=-2.5, xmax=3.5, % Ampliado para que la gráfica no toque los bordes
+    ymin=-1.5, ymax=5.5, % Ampliado para ver el vértice de h(x) con claridad
+    xtick={-2, -1, 0, 1, 2, 3},
+    ytick={-1, 0, 1, 2, 3, 4, 5},
+    grid=both,
+    grid style={line width=.1pt, draw=gray!30},
+    major grid style={line width=.2pt,draw=gray!60},
+    width=12cm,
+    height=8cm,
+    samples=100,
+    clip=false % Permite que las etiquetas se vean aunque se salgan levemente del eje
+]
+
+% Función h(x) - Azul
+\addplot[blue, thick, domain=-1.2:2.5] {x^2 - 2*x} 
+    node[pos=0.1, anchor=south east] {$h(x) = x^2 - 2x$};
+
+% Función g(x) - Roja
+\addplot[red, thick, domain=-2.1:2.1] {-x^2 + 4} 
+    node[pos=0.5, anchor=south] {$g(x) = -x^2 + 4$};
+
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+El área será lo que está entre las dos funciones
+
+\subsubsection*{Ejemplo 2}
+El area de las curvas $y=x^2-3$ e $y=\frac{x^3}{4}-x+1$
+\subsubsection*{Solución:}
+Primero denotaré las funciones
+$$h(x)=x^2-3$$
+$$g(x)=\frac{x^3}{4}-x+1$$
+veamos donde se intersectan, igualamos $$y=y$$
+
+\begin{center}
+\begin{align*}
+x^2 - 3 = \frac{x^3}{4} - x + 1 \\
+\frac{x^3}{4} - x^2 - x + 4 &= 0 \\
+x^3 - 4x^2 - 4x + 16 &= 0 \\
+x^3(x - 4) - 4(x - 4) &= 0 \\
+(x^2 - 4)(x - 4) &= 0 \\
+(x - 2)(x + 2)(x - 4) &= 0
+\end{align*}
+\end{center}
+
+Notemos que nos entregó tres puntos, por lo que nos puede dar un indicio a que la funcion mayor/menor cambia en un punto por lo que la integral se separa.
+
+Para $-2<x<2$ tomemos $x=0$
+$$h(0)=-3$$
+$$g(0)=1$$
+Como $h(x)<g(x)$ la primera integral nos queda
+$$\int_{-2}^2 \frac{x^3}{4}-x+1-(x^2-3) dx$$
+Ahora veamos la siguiente integral, como termina en 4 debemos tomar un numero que se encuentre $2<x<4$ sea $x=3$}
+$$h(3)=6$$
+$$g(3)=\frac{19}{4}$$
+Como $g(x)<h(x)$  la integral nos queda$$\int_{2}^4 x^2-3-\left(\frac{x^3}{4}-x+1\right)dx$$
+Finalmente, el área entre las curvas será el resultado de la suma de las dos integrales
+$$A=\int_{-2}^2 \frac{x^3}{4}-x+1-(x^2-3)dx +\int_{2}^4 x^2-3-\left(\frac{x^3}{4}-x+1\right)dx$$
+$$A=\frac{37}{3}$$
+\begin{center}
+\begin{tikzpicture}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines=middle,
+    xlabel={$x$},
+    ylabel={$y$},
+    xmin=-3.5, xmax=5.5,
+    ymin=-6, ymax=15,
+    xtick={-3,-2, -1, 0, 1, 2, 3, 4, 5},
+    ytick={-4, -2, 0, 2, 4, 6, 8, 10, 12, 14},
+    grid=both,
+    grid style={line width=.1pt, draw=gray!30},
+    major grid style={line width=.2pt,draw=gray!60},
+    width=12cm,
+    height=8cm,
+    samples=100,
+    % Esto evita que las etiquetas se corten si están fuera del borde
+    clip=false 
+]
+
+% Función h(x) - Ajustada al dominio visual
+\addplot[blue, thick, domain=-3:4.2] {x^2 - 3} 
+    node[pos=0.9, anchor=east, xshift=-5pt] {$h(x) = x^2 - 3$};
+
+% Función g(x) - Ajustada al dominio visual
+\addplot[red, thick, domain=-3:4.8] {x^3/4 - x + 1} 
+    node[pos=0.1, anchor=south west] {$g(x) = \frac{x^3}{4} - x + 1$};
+
+\end{axis}
+\end{tikzpicture}
+\end{tikzpicture}
+\end{center}
+\end{document}
